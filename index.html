@@ -13,23 +13,53 @@
     <script src="p5.min.js"></script>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css?family=Anton|Coda" rel="stylesheet">
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+          tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            processEscapes: true
+          }
+        });
+      </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=default" async></script>
 </head>
 
 <body onload="displayGrid()" onresize="resizeDiagram()">
 
-  <p id="title">A tribute to octonions</p>
+  <!-- <p id="title">A tribute to octonions</p> -->
+
+  <article id="about">
+    <h2 style="text-align: center; font-size: 3vmax;">The algebra of octonions</h2>
+    <!-- I'm sure you have heard before of the complex numbers.
+
+    $$p = a_0 + a_1i$$
+
+    in which $i^2 = -1$.
+
+    Perhaps you also have heard of the quaternions:
+
+    $$p = a_0 + a_1i + a_2j + a_3k$$
+
+    with $ijk = -1$.
+
+    Now, look at this beauty: the algebra of octonions! The last normed division algebra of the Cayley - Dickson construction process. The one that it not ordered or commutative, not even associative!
+
+    $$p = a_0 + a_1i + a_2j + a_3k + a_4I + a_5J + a_6K + a_7E$$
+    $$q = b_0 + b_1i + b_2j + b_3k + b_4I + b_5J + b_6K + b_7E$$ -->
+
+  </article>
 
   <div id="canvas_container"></div>
 
   <div id="game_grid"></div>
 
-  <article id="about">
+  <!-- <article id="about">
     <h2 style="text-align: center; font-size: 3vmax;">The algebra of octonions</h2>
     Look at this beauty: the algebra of octonions! The last normed division algebra of the Cayley - Dickson construction process. The one that it not ordered or commutative, not even associative!
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  </article>
+  </article> -->
 
   <footer>
     <p><a href="https://github.com/Robaina/Octonions">Semidán Robaina Estévez</a>, 2019. <br/>
