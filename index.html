@@ -12,6 +12,8 @@
   	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.min.js"></script> -->
     <script src="p5.min.js"></script>
     <link rel="stylesheet" href="styles.css">
+    <!-- <script src="octonions.js"></script>
+    <script src="octonion-multiply.js"></script> -->
     <link href="https://fonts.googleapis.com/css?family=Anton|Coda" rel="stylesheet">
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
@@ -24,42 +26,67 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=default" async></script>
 </head>
 
-<body onload="displayGrid()" onresize="resizeDiagram()">
+<body>
 
-  <!-- <p id="title">A tribute to octonions</p> -->
-
-  <article id="about">
+  <article class="post_text" id="about">
     <h2 style="text-align: center; font-size: 3vmax;">The algebra of octonions</h2>
-    <!-- I'm sure you have heard before of the complex numbers.
+
+    I'm sure you have heard before of the complex numbers.
 
     $$p = a_0 + a_1i$$
 
-    in which $i^2 = -1$.
+    in which $i^2 = -1$ and where the coefficients $a_0, a_1$ are real numbers.
 
     Perhaps you also have heard of the quaternions:
 
     $$p = a_0 + a_1i + a_2j + a_3k$$
 
-    with $ijk = -1$.
+    with $ijk = -1$ and $i^2 = j^2 = k^2 = -1$.
 
     Now, look at this beauty: the algebra of octonions! The last normed division algebra of the Cayley - Dickson construction process. The one that it not ordered or commutative, not even associative!
 
     $$p = a_0 + a_1i + a_2j + a_3k + a_4I + a_5J + a_6K + a_7E$$
-    $$q = b_0 + b_1i + b_2j + b_3k + b_4I + b_5J + b_6K + b_7E$$ -->
 
+    The multiplication rule here is a little bit more complicated... But it can be visualized in a beautiful way with the help of the Fano plane shown below.
   </article>
+
+  <div class="title">The Fano plane</div>
 
   <div id="canvas_container"></div>
 
+  <article class="post_text">
+    In the Fano plane, each circle represents one of the imaginary units in an octonion. And the lines represent the direction of multiplication. For instance, following the arrows, we have that $Ik = J$. Note that with the Fano plane &mdash; and a clever naming of the imaginary units &mdash; it is easy to see the structure of an octonion, composed of two, nested quaternions.
+
+    Below is the multiplication table of the octonions which contains all the multiplication rules for the imaginary units depicted in the Fano place. With it, you should be able to have fun doing some octonion arithmetic &mdash; remember that division is equivalent to multiplying by the multiplicative inverse of a number. However, for those of you that are like me and despise doing calculations at hand, I have written a JavaScript function to do arithmetic with octonions. All you have to do is to type your octonions in the input boxes and choose which operation you would like do. Have fun!
+  </article>
+
+  <div class="title">Multiplication table</div>
   <div id="game_grid"></div>
 
-  <!-- <article id="about">
-    <h2 style="text-align: center; font-size: 3vmax;">The algebra of octonions</h2>
-    Look at this beauty: the algebra of octonions! The last normed division algebra of the Cayley - Dickson construction process. The one that it not ordered or commutative, not even associative!
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  <div id="input-form">
 
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  </article> -->
+    <form id="myForm" onsubmit="operateOnOctonions()">
+      $p =$
+      <input class="number-input" type="text" id="number-p" name="number-p" value="1 + 1i + 2j + 3k + 1E - 2.5I + 1.2J + 3K">
+      $q = $
+      <input class="number-input" type="text" id="number-q" name="number-q" value="0 - 0.5i + 2j - 1k - 1.5E + 3.2I + 0.7J - 0.5K">
+
+      <input type="radio" id="add" name="operation" value="add">
+      <label for="add">+</label><br>
+      <input type="radio" id="subtract" name="operation" value="subtract">
+      <label for="subtract">-</label><br>
+      <input type="radio" id="multiply" name="operation" value="multiply" checked="checked">
+      <label for="multiply">x</label>
+      <input type="radio" id="divide" name="operation" value="divide">
+      <label for="divide">÷</label>
+
+      <input type="submit" value="=">
+    </form>
+
+
+    <div id="form-result"></div>
+
+  </div>
 
   <footer>
     <p><a href="https://github.com/Robaina/Octonions">Semidán Robaina Estévez</a>, 2019. <br/>
@@ -67,6 +94,7 @@
   </footer>
 
   <script src="octonions.js"></script>
+  <script src="octonion-multiply.js"></script>
 
 </body>
 

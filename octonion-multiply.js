@@ -66,6 +66,11 @@ function multiplyCayleyDickson(w, z) {
 
 }
 
+Number.prototype.countDecimals = function () {
+  if(Math.floor(this.valueOf()) === this.valueOf()) return 0;
+  return this.toString().split(".")[1].length || 0;
+}
+
 class Octonion {
 
   constructor(coeffs=[]) {
@@ -131,27 +136,38 @@ class Octonion {
 
 }
 
-// Bartok: 6 romanian dances for violin and piano
+// Bartok: 6 romanian dances for violin and piano => good stuff
 class CayleyDicksonNumber {
 
-  constructor(coeffs=[], dim=4) {
+  constructor(number=[], units=[], dim=4) {
 
-    if (coeffs.length < 1) {
+    if (typeof number === "string") {
+      let parsed_number = this.parseNumberString(number);
+      number = parsed_number.coeffs;
+      units = parsed_number.units;
+    }
+    if (number.length < 1) {
       for (let i=0; i<dim; i++) {
-        coeffs.push(0);
+        number.push(0);
       }
-      coeffs[0] = 1;
+      number[0] = 1;
     }
 
-    for (let i=0; i<coeffs.length;i++) {
-      this[`e_${i}`] = coeffs[i];
+    if (units.length < 1) {
+      for (let i=0; i<number.length;i++) {
+        this[`e_${i}`] = number[i];
+      }
+    } else {
+      for (let i=0; i<number.length;i++) {
+        this[units[i]] = number[i];
+      }
     }
 
   }
 
   add(other) {
     let dim = Object.keys(this).length;
-    let result = new CayleyDicksonNumber([], dim);
+    let result = new CayleyDicksonNumber([], this.getUnits(), dim);
     for (let field in this) {
       result[field] =  this[field] + other[field];
     }
@@ -160,7 +176,7 @@ class CayleyDicksonNumber {
 
   subtract(other) {
     let dim = Object.keys(this).length;
-    let result = new CayleyDicksonNumber([], dim);
+    let result = new CayleyDicksonNumber([], this.getUnits(), dim);
     for (let field in this) {
       result[field] =  this[field] - other[field];
     }
@@ -169,10 +185,11 @@ class CayleyDicksonNumber {
 
   multiply(other) {
     let dim = Object.keys(this).length;
-    let result = new CayleyDicksonNumber([], dim);
+    let result = new CayleyDicksonNumber([], this.getUnits(), dim); // ADD units here!!
     let w = this.getCoeffs();
     let z = other.getCoeffs();
-    let result_coeffs = multiplyCayleyDickson(w, z);
+    let result_coeffs = multiplyCayleyDickson(w, z); // Something going on here...
+
     let i = 0;
     for (let field in this) {
       result[field] = result_coeffs[i];
@@ -183,7 +200,7 @@ class CayleyDicksonNumber {
 
   divide(other) {
     let dim = Object.keys(this).length;
-    let result = new CayleyDicksonNumber([], dim);
+    let result = new CayleyDicksonNumber([], this.getUnits(), dim);
     let w = this.getCoeffs();
     let z = invert(other.getCoeffs());
     let result_coeffs = multiplyCayleyDickson(w, z);
@@ -195,6 +212,51 @@ class CayleyDicksonNumber {
     return result
   }
 
+  parseNumberString(number_str) {
+
+    let letter = /[a-z]/gi;
+    let is_real_number = number_str.match(letter) === null? true: false;
+
+    function parseRealNumber() {
+      return {"coeffs": [parseFloat(number_str), 0], "units": ["", "i"]}
+    }
+
+    function parseNonRealNumber() {
+      let sign = /[+-]/gi;
+      let digit = /[0-9.]/g;
+      let units = [];
+      let values = [];
+      let signs = number_str.match(sign);
+      let components = number_str.split(sign);
+      if (signs.length < components.length && components[0] !== "") {
+        signs.unshift("+");
+      }
+      let n = 0;
+      for (let component of components) {
+        if (component !== "") {
+          let unit;
+          if (component.match(letter) !== null) {
+            unit = component.match(letter).join("");
+          } else {
+            unit = "";
+          }
+          let value = parseFloat(signs[n] + component.split(letter)[0].trim());
+          units.push(unit);
+          values.push(value);
+          n++;
+        }
+      }
+      return {"coeffs": values, "units": units}
+    }
+
+    if (is_real_number) {
+      return parseRealNumber();
+    } else {
+      return parseNonRealNumber();
+    }
+
+  }
+
   getCoeffs() {
     let number_coeffs = [];
     for (let field in this) {
@@ -203,37 +265,69 @@ class CayleyDicksonNumber {
     return number_coeffs
   }
 
+  getUnits() {
+    let number_units = [];
+    for (let field in this) {
+      number_units.push(field);
+    }
+    return number_units
+  }
+
+  toString(decimals=null) {
+    let sign = "";
+    let str = "";
+    let coeffs = this.getCoeffs();
+    let units = this.getUnits();
+    let round = (n, dec) => Math.round(n * 10**dec) / 10**dec;
+
+    for (let i=0; i<coeffs.length; i++) {
+      let coeff;
+      let sign = coeffs[i] >=0 ? "+": "";
+      if (decimals !== null) {
+        coeff = round(coeffs[i], decimals);
+        let number_decimals = coeff.countDecimals();
+        let decimal_diff = decimals - number_decimals;
+        if (decimal_diff > 0) {
+           if (number_decimals > 0) {
+             coeff = coeff + "0".repeat(decimal_diff);
+           } else {
+             coeff = coeff + "." + "0".repeat(decimal_diff);
+           }
+        }
+      } else {
+        coeff = coeffs[i];
+      }
+      str = str + sign + coeff + units[i];
+    }
+    if (str[0] === "+") {
+      return str.slice(1).replace(/\+/g," + ").replace(/\-/g, " - ")
+    } else {
+      return str.slice(0, 1) + str.slice(1).replace(/\+/g," + ").replace(/\-/g, " - ")
+    }
+  }
+
 }
 
-// let o = new Octonion([0,1,0,0,0,0,0,0]);
-// let u = new Octonion([0,0,1,0,0,0,0,0]);
+function getSelectedOperation() {
+  let operations = document.getElementsByName("operation");
+  for (let operation of operations) {
+    if (operation.checked) {
+      return operation.value;
+    }
+  }
+}
 
-// console.log(o.divide(u));
-let q = new CayleyDicksonNumber([5]);
-let r = new CayleyDicksonNumber([3]);
-// console.log(q, r);
-console.log(q.multiply(r));
-// let p = new CayleyDicksonNumber([1,2,3,4,5,6,7,8]);
-// console.log(p);
-// let a = new CayleyDicksonNumber([], dim=16);
-// let b = new CayleyDicksonNumber([], dim=16);
-//console.log(a.divide(b));
+function operateOnOctonions() {
+  let selected_operation = getSelectedOperation();
+  let result_div = document.getElementById("form-result");
+  let number_str_p = document.getElementById("number-p").value;
+  let number_str_q = document.getElementById("number-q").value;
+  let p = new CayleyDicksonNumber(number_str_p);
+  let q = new CayleyDicksonNumber(number_str_q);
+  let decimals = 2;
+  let result_str = eval(`p.${selected_operation}(q).toString(${decimals})`);
+  result_div.innerHTML = `$pq = ${result_str}$`;
+  MathJax.Hub.Queue(["Typeset", MathJax.Hub, result_div]);
+}
 
-
-//
-// let letters = /[a-z]/gi;
-// let number = '-1.3 + 1i + 4.2j - 0.4k';
-// let signs = /[+-]/gi;
-// let digits = /[0-9.]/g;
-// let parsed = {};
-// console.log(number.match(digits));
-// console.log(number.match(signs));
-// let components = number.split(signs);
-// // console.log(number.split(letters));
-// // console.log(components);
-// for (component of components) {
-//     // console.log(component.search(letters));
-//     // console.log(component[component.search(letters)]);
-//   // console.log(component);
-//   // console.log(component.split(letters));
-// }
+// TODO: Need to enable real input, also autogenerate a complex number when user enters disparate number types, e.g. one real and one quaternion. Also, number of decimals should be selected automatically based on maximum number of decimals set by user, at least as a default feature.

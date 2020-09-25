@@ -7,6 +7,12 @@ let colors = ["rgb(94, 217, 69)", "rgb(250, 198, 44)", "rgb(246, 113, 71)",
 let trail_color = colors[Math.floor(Math.random() * colors.length)];
 
 document.body.style.setProperty("--fancyColor", trail_color);
+document.body.onload= displayGrid;
+document.body.onresize = resizeDiagram;
+// Avoid reloading page on submit
+let form = document.getElementById("myForm");
+function handleForm(event) { event.preventDefault(); }
+form.addEventListener('submit', handleForm);
 
 let scale_factor = 250;
 let offsetAngle, points;
@@ -81,11 +87,10 @@ restValues["x76"] = "i";
 restValues["x77"] = "- 1";
 
 
-
 function setup() {
   cnv = createCanvas(windowWidth, windowHeight / 1.5);
   cnv.parent("canvas_container");
-  scale_factor = 0.5 * height;
+  scale_factor = 0.3 * width; //0.5 * height;
   angleMode(RADIANS);
   rectMode(CENTER);
   colorMode(RGB);
@@ -99,8 +104,8 @@ function setup() {
 }
 
 function draw() {
+  scale_factor = 0.3 * width;
   background("black");
-
   translate(width / 2, height / 1.5);
   noFill();
   stroke("white");
@@ -141,6 +146,7 @@ function draw() {
     fill(color(trail_color));
     ellipse(points[p].x, points[p].y, 0.2 * scale_factor, 0.2 * scale_factor);
     fill("white");
+    textSize(0.01 * scale_factor * 14)
     text(id_map[p], text_x, text_y);
   }
 
@@ -195,6 +201,11 @@ function draw() {
   noLoop();
 }
 
+function resizeDiagram() {
+  console.log("resizing", windowWidth, windowHeight);
+  resizeCanvas(windowWidth, windowHeight);
+}
+
 function drawArrow(x, y, size, angle=0) {
   let tx = [];
   let ty = [];
@@ -221,9 +232,9 @@ function displayGrid() {
       smallCell.setAttribute("class", "small-cell");
 
       smallCell.setAttribute("id", "x" + i + j);
-      smallCell.setAttribute("contenteditable", "true");
-      smallCell.addEventListener("click", selectCell);
-      smallCell.addEventListener("touch", selectCell);
+      // smallCell.setAttribute("contenteditable", "true");
+      // smallCell.addEventListener("click", selectCell);
+      // smallCell.addEventListener("touch", selectCell);
 
       if (Object.keys(initialValues).includes(smallCell.id)) {
         smallCell.innerHTML = initialValues[smallCell.id];
@@ -255,16 +266,15 @@ function displayGrid() {
 //   return grid_numbers
 // }
 
-
-function selectCell(event) {
-  selectedCell = event.target;
-  removeSelected();
-  selectedCell.classList.remove("empty-cell");
-  selectedCell.classList.add("selected-cell");
-  if (selectedCell.innerHTML === "0") {
-    selectedCell.innerHTML = "";
-  }
-}
+// function selectCell(event) {
+//   selectedCell = event.target;
+//   removeSelected();
+//   selectedCell.classList.remove("empty-cell");
+//   selectedCell.classList.add("selected-cell");
+//   if (selectedCell.innerHTML === "0") {
+//     selectedCell.innerHTML = "";
+//   }
+// }
 
 function removeSelected() {
   let cells = document.getElementsByClassName("small-cell");
@@ -312,8 +322,4 @@ function getCellNumbers() {
       }
     }
   }
-}
-
-function resizeDiagram() {
-  resizeCanvas(windowWidth, windowHeight);
 }
