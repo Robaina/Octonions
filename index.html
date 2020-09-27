@@ -28,9 +28,11 @@
 
 <body>
 
-  <article class="post_text" id="about">
-    <h2 style="text-align: center; font-size: 3vmax;">The algebra of octonions</h2>
+  <div class="title-container">
+    <div class="title">The algebra of octonions</div>
+  </div>
 
+  <article class="post_text">
     I'm sure you have heard before of the complex numbers.
 
     $$p = a_0 + a_1i$$
@@ -50,26 +52,39 @@
     The multiplication rule here is a little bit more complicated... But it can be visualized in a beautiful way with the help of the Fano plane shown below.
   </article>
 
-  <div class="title">The Fano plane</div>
+  <div class="title-container">
+    <div class="title subtitle">The Fano plane</div>
+  </div>
 
   <div id="canvas_container"></div>
 
   <article class="post_text">
     In the Fano plane, each circle represents one of the imaginary units in an octonion. And the lines represent the direction of multiplication. For instance, following the arrows, we have that $Ik = J$. Note that with the Fano plane &mdash; and a clever naming of the imaginary units &mdash; it is easy to see the structure of an octonion, composed of two, nested quaternions.
-
-    Below is the multiplication table of the octonions which contains all the multiplication rules for the imaginary units depicted in the Fano place. With it, you should be able to have fun doing some octonion arithmetic &mdash; remember that division is equivalent to multiplying by the multiplicative inverse of a number. However, for those of you that are like me and despise doing calculations at hand, I have written a JavaScript function to do arithmetic with octonions. All you have to do is to type your octonions in the input boxes and choose which operation you would like do. Have fun!
   </article>
 
-  <div class="title">Multiplication table</div>
-  <div id="game_grid"></div>
+  <div class="title-container">
+    <div class="title subtitle">Multiplication table</div>
+  </div>
+
+  <article class="post_text">
+    Below is the multiplication table of the octonions which contains all the multiplication rules for the imaginary units depicted in the Fano plane. With it, you should be able to have fun doing some octonion arithmetic &mdash; remember that division is equivalent to multiplying by the multiplicative inverse of a number. However, for those of you that are like me and despise doing calculations at hand, I have written a JavaScript function to do arithmetic with octonions. All you have to do is to type your octonions in the input boxes and choose which operation you would like do. Have fun!
+  </article>
+
+  <div id="multiplication_table"></div>
+
+  <div class="title-container">
+    <div class="title subtitle">Octonion calculator</div>
+  </div>
 
   <div id="input-form">
 
     <form id="myForm" onsubmit="operateOnOctonions()">
       $p =$
       <input class="number-input" type="text" id="number-p" name="number-p" value="1 + 1i + 2j + 3k + 1E - 2.5I + 1.2J + 3K">
+      </br>
       $q = $
       <input class="number-input" type="text" id="number-q" name="number-q" value="0 - 0.5i + 2j - 1k - 1.5E + 3.2I + 0.7J - 0.5K">
+      </br>
 
       <input type="radio" id="add" name="operation" value="add">
       <label for="add">+</label><br>
@@ -82,7 +97,6 @@
 
       <input type="submit" value="=">
     </form>
-
 
     <div id="form-result"></div>
 

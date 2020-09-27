@@ -221,7 +221,7 @@ function drawArrow(x, y, size, angle=0) {
 }
 
 function displayGrid() {
-  let gameGrid = document.getElementById("game_grid");
+  let gameGrid = document.getElementById("multiplication_table");
   gameGrid.style.setProperty("grid-template-columns",
     "repeat(" + ncols + ", auto)");
 
