@@ -308,17 +308,9 @@ class CayleyDicksonNumber {
 
 }
 
-function getSelectedOperation() {
-  let operations = document.getElementsByName("operation");
-  for (let operation of operations) {
-    if (operation.checked) {
-      return operation.value;
-    }
-  }
-}
 
-function operateOnOctonions() {
-  let selected_operation = getSelectedOperation();
+function operateOnOctonions(e) {
+  let selected_operation = e.id;
   let result_div = document.getElementById("form-result");
   let number_str_p = document.getElementById("number-p").value;
   let number_str_q = document.getElementById("number-q").value;

@@ -90,7 +90,7 @@ restValues["x77"] = "- 1";
 function setup() {
   cnv = createCanvas(windowWidth, windowHeight / 1.5);
   cnv.parent("canvas_container");
-  scale_factor = 0.3 * width; //0.5 * height;
+  scale_factor = 0.22 * width;
   angleMode(RADIANS);
   rectMode(CENTER);
   colorMode(RGB);
@@ -104,7 +104,7 @@ function setup() {
 }
 
 function draw() {
-  scale_factor = 0.3 * width;
+  scale_factor = 0.22 * width;
   background("black");
   translate(width / 2, height / 1.5);
   noFill();

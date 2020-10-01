@@ -67,7 +67,7 @@
   </div>
 
   <article class="post_text">
-    Below is the multiplication table of the octonions which contains all the multiplication rules for the imaginary units depicted in the Fano plane. With it, you should be able to have fun doing some octonion arithmetic &mdash; remember that division is equivalent to multiplying by the multiplicative inverse of a number. However, for those of you that are like me and despise doing calculations at hand, I have written a JavaScript function to do arithmetic with octonions. All you have to do is to type your octonions in the input boxes and choose which operation you would like do. Have fun!
+    Below is the multiplication table of the octonions, which contains all the multiplication rules for the imaginary units depicted in the Fano plane. With it, you should be able to have fun doing some octonion arithmetic &mdash; remember that division is equivalent to multiplying by the multiplicative inverse of a number.
   </article>
 
   <div id="multiplication_table"></div>
@@ -76,9 +76,13 @@
     <div class="title subtitle">Octonion calculator</div>
   </div>
 
+  <article class="post_text">
+    Ok..., for those of you who are like me, and despise doing calculations at hand, I have written a JavaScript function to do arithmetic with octonions! All you have to do is to type your octonions in the input boxes and choose which operation you would like do. Have fun!
+  </article>
+
   <div id="input-form">
 
-    <form id="myForm" onsubmit="operateOnOctonions()">
+    <form id="myForm">
       $p =$
       <input class="number-input" type="text" id="number-p" name="number-p" value="1 + 1i + 2j + 3k + 1E - 2.5I + 1.2J + 3K">
       </br>
@@ -86,19 +90,13 @@
       <input class="number-input" type="text" id="number-q" name="number-q" value="0 - 0.5i + 2j - 1k - 1.5E + 3.2I + 0.7J - 0.5K">
       </br>
 
-      <input type="radio" id="add" name="operation" value="add">
-      <label for="add">+</label><br>
-      <input type="radio" id="subtract" name="operation" value="subtract">
-      <label for="subtract">-</label><br>
-      <input type="radio" id="multiply" name="operation" value="multiply" checked="checked">
-      <label for="multiply">x</label>
-      <input type="radio" id="divide" name="operation" value="divide">
-      <label for="divide">÷</label>
-
-      <input type="submit" value="=">
+      <input type="submit" class="form-button" id="add" value="+" name="operation" onclick="operateOnOctonions(this);">
+      <input type="submit" class="form-button" id="subtract" name="operation" value="-" onclick="operateOnOctonions(this);">
+      <input type="submit" class="form-button" id="multiply" name="operation" value="x" onclick="operateOnOctonions(this);">
+      <input type="submit" class="form-button" id="divide" name="operation" value="÷" onclick="operateOnOctonions(this) ;">
     </form>
 
-    <div id="form-result"></div>
+    <div class="number-input" id="form-result"></div>
 
   </div>
 
